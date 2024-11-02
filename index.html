@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Feliz Cumpleaños!</title>
+    <style>
+        /* Estilos generales */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffccf9;
+            color: #6a0572;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+        }
+        h1 {
+            font-size: 2.5em;
+            margin: 20px 0;
+            color: #b3006f;
+        }
+        h2 {
+            font-size: 1.8em;
+            margin: 10px 0;
+        }
+        p {
+            font-size: 1.2em;
+            line-height: 1.6;
+            margin: 20px 0;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #b3006f;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+        }
+        .button:hover {
+            background-color: #6a0572;
+        }
+
+        /* Estilos del carrusel */
+        .carousel {
+            position: relative;
+            max-width: 100%;
+            margin: 20px auto;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+        .carousel img {
+            width: 100%;
+            display: none;
+        }
+        .carousel img.active {
+            display: block;
+        }
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 1.5em;
+        }
+        .carousel-btn.left {
+            left: 10px;
+        }
+        .carousel-btn.right {
+            right: 10px;
+        }
+
+        /* Confeti y Globos animados */
+        .confetti, .balloon {
+            position: fixed;
+            top: -10%;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: fall linear infinite;
+            z-index: 1;
+        }
+        /* Colores de confeti */
+        .confetti { background-color: #ffc107; }
+        .balloon:nth-child(odd) { background-color: #e91e63; }
+        .balloon:nth-child(even) { background-color: #03a9f4; }
+
+        /* Animaciones */
+        @keyframes fall {
+            0% { transform: translateY(-100%) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>¡Feliz Cumpleaños , Aura!</h1>
+        
+        <!-- Carrusel de imágenes -->
+        <div class="carousel">
+            <img src="1image.jpeg" class="active" alt="Imagen 1">
+            <img src="https://via.placeholder.com/600x400?text=Imagen+2" alt="Imagen 2">
+            <img src="https://via.placeholder.com/600x400?text=Imagen+3" alt="Imagen 3">
+            <button class="carousel-btn left" onclick="prevSlide()">❮</button>
+            <button class="carousel-btn right" onclick="nextSlide()">❯</button>
+        </div>
+        
+        <!-- Texto que cambia con las imágenes -->
+        <h2 id="dynamic-text">Te deseamos un día lleno de amor y alegría</h2>
+        <p id="dynamic-paragraph">Que este nuevo año esté lleno de aventuras, sonrisas y grandes logros. Eres una persona increíble, y estamos muy felices de celebrar contigo este día tan especial. ¡A brindar por muchos más años llenos de felicidad!</p>
+        <a href="#" class="button">Celebrar juntos</a>
+    </div>
+
+    <!-- Globos y Confeti -->
+    <script>
+        // Configuración del confeti y los globos
+        const NUM_ITEMS = 50;
+        for (let i = 0; i < NUM_ITEMS; i++) {
+            const confetti = document.createElement('div');
+            confetti.classList.add('confetti');
+            confetti.style.left = `${Math.random() * 100}vw`;
+            confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
+            confetti.style.animationDelay = `${Math.random() * 5}s`;
+            document.body.appendChild(confetti);
+
+            const balloon = document.createElement('div');
+            balloon.classList.add('balloon');
+            balloon.style.left = `${Math.random() * 100}vw`;
+            balloon.style.animationDuration = `${Math.random() * 4 + 3}s`;
+            balloon.style.animationDelay = `${Math.random() * 5}s`;
+            document.body.appendChild(balloon);
+        }
+
+        // Carrusel de imágenes y textos
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.carousel img');
+        const texts = [
+            { title: "Te deseamos un día lleno de amor y alegría", paragraph: "Que este nuevo año esté lleno de aventuras, sonrisas y grandes logros." },
+            { title: "¡Celebrando este día especial!", paragraph: "Eres alguien único, y cada momento contigo es especial. ¡A disfrutar!" },
+            { title: "¡Por muchos más años llenos de felicidad!", paragraph: "Esperamos que este año esté lleno de sueños cumplidos y sorpresas maravillosas." }
+        ];
+
+        function showSlide(index) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (index + slides.length) % slides.length;
+            slides[currentSlide].classList.add('active');
+            document.getElementById('dynamic-text').textContent = texts[currentSlide].title;
+            document.getElementById('dynamic-paragraph').textContent = texts[currentSlide].paragraph;
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        function prevSlide() {
+            showSlide(currentSlide - 1);
+        }
+
+        setInterval(nextSlide, 3000); // Cambia de imagen y texto cada 3 segundos
+    </script>
+</body>
+</html>
